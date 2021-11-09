@@ -1,25 +1,42 @@
 import "./App.css";
-import ImageItem from "./ImageItem";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from "./Form";
+import axios from "axios";
+import React from "react";
 
 function App() {
-  const images = [
-    "https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F5d35eacaf1176b0008974b54%2F2020-Chevrolet-Corvette-Stingray%2F960x0.jpg%3FcropX1%3D790%26cropX2%3D5350%26cropY1%3D784%26cropY2%3D3349https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F5d35eacaf1176b0008974b54%2F2020-Chevrolet-Corvette-Stingray%2F960x0.jpg%3FcropX1%3D790%26cropX2%3D5350%26cropY1%3D784%26cropY2%3D3349",
-    "https://cdn.motor1.com/images/mgl/8e8Mo/s1/most-expensive-new-cars-ever.webp",
-    "https://cdn.motor1.com/images/mgl/mrz1e/s1/coolest-cars-feature.webp",
-    "https://i.insider.com/550cbf03ecad04de2c7c008a?width=1200&format=jpeg",
-    "https://cdn.luxe.digital/media/2020/12/15110747/fastest-cars-world-2021-luxe-digital%402x.jpg",
-  ];
+  let data;
+  const [num, setNum] = React.useState(0);
+  const [title, setTitle] = React.useState("");
+  const URL = `https://jsonplaceholder.typicode.com/posts/${num}`;
+  const sendGetRequest = async () => {
+    try {
+      const resp = await axios.get(URL);
+      console.log(resp.data);
+      setTitle(() => {
+        return resp.data.title;
+      });
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  };
+
+  React.useEffect(() => {
+    sendGetRequest();
+  }, [num]);
+
+  function handleChange(e) {
+    console.log(e.target.value);
+    setNum(() => {
+      return e.target.value;
+    });
+  }
 
   return (
     <div className="App">
-      <ul style={{ padding: "1rem" }}>
-        {images.map((url) => (
-          <ImageItem img={url} />
-        ))}
-      </ul>
-      <Form />
+      <p>Enter number form 1 to 100</p>
+      <input type="number" onChange={handleChange} />
+      <p>{num <= 100 && num > 0 ? title : ""}</p>
     </div>
   );
 }
