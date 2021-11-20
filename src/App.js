@@ -10,17 +10,15 @@ function App() {
   const [getInput, setGetInput] = React.useState({});
 
   const getItems = async (current) => {
-    setGetInput((prev) => ({ ...prev, Page: `${current}` }));
     console.log(getInput, current);
     const response = await axios(`https://api2.myauto.ge/ka/products?`, {
-      params: getInput,
+      params: { ...getInput, ...{ Page: current } },
     });
     return response.data.data;
   };
 
   const handlePageClick = async (data) => {
     let current = data.selected + 1;
-    // console.log(current);
     const itemsFromServer = await getItems(current);
     setInfo(itemsFromServer);
   };
