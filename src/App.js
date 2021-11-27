@@ -22,7 +22,7 @@ function App() {
       params: data,
     });
     event.target.reset();
-    navigator(`/${data.Keyword}`, { state: response.data.data, data });
+    navigator(`/product${data.Keyword}`, { state: response.data.data, data });
   };
   return (
     <div style={{ backgroundColor: "#f2f3f6" }}>
